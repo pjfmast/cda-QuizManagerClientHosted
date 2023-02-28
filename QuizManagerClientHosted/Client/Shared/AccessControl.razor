@@ -1,0 +1,27 @@
+﻿@* Client/Shared/AccessControl.razor *@
+
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@inject NavigationManager Navigation
+
+<AuthorizeView>
+    <Authorized>
+        Hello, @(context.User.Identity?.Name ?? "no name")
+        <a href="#" @onclick="BeginSignOut">Log out</a>
+    </Authorized>
+    <NotAuthorized>
+        <a href="authentication/login">Log in</a>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private void BeginSignOut(MouseEventArgs args)
+    {
+        // this is obsolete in .NET 7:
+        //      await SignOutManager.SetSignOutState();
+        //      Navigation.NavigateTo("authentication/logout");
+        // Replace with:
+        Navigation.NavigateToLogout("authentication/logout");
+    }
+}
